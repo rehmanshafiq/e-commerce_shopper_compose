@@ -8,7 +8,7 @@ class DataProductModel (
     val id: Int,
     val title: String,
     val price: Double,
-    val categoryId: Int,
+//    val categoryId: Int,
     val description: String,
     val image: String
 ) {
@@ -16,7 +16,7 @@ class DataProductModel (
         id = id,
         title = title,
         price = price,
-        categoryId = categoryId,
+//        category_id = category_id,
         description = description,
         image = image
     )
