@@ -2,4 +2,6 @@ package com.shafiq.data.di
 
 import org.koin.dsl.module
 
-val dataModule = module {  }
+val dataModule = module {
+    includes(networkModule, repositoryModule)
+}

@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.shafiq.shopper_ecommerce"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -71,4 +71,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.koin.android)
     implementation(libs.koin.android.compose)
+    implementation(libs.compose.navigation)
+    implementation(libs.coil.compose)
 }
