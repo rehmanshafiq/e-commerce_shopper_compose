@@ -173,14 +173,7 @@ fun HomeContent(
         }
         item {
             if (isLoading) {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    CircularProgressIndicator(modifier = Modifier.size(50.dp))
-                    Text(text = "Loading...", style = MaterialTheme.typography.bodyMedium)
-                }
+                ShowLoader()
             }
             errorMessage?.let { 
                 Text(text = it, style = MaterialTheme.typography.bodyMedium)
@@ -211,6 +204,18 @@ fun HomeContent(
                 HomeProductRow(products = popularProducts, title = "Popular")
             }
         }
+    }
+}
+
+@Composable
+private fun ShowLoader() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        CircularProgressIndicator(modifier = Modifier.size(50.dp))
+        Text(text = "Loading...", style = MaterialTheme.typography.bodyMedium)
     }
 }
 
