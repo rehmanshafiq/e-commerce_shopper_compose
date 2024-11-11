@@ -2,6 +2,7 @@ package com.shafiq.shopper_ecommerce.feature.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,6 +29,8 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -51,6 +54,26 @@ fun HomeScreen(
 
     val uiState = viewModel.uiState.collectAsState()
 
+    val loading = remember {
+        mutableStateOf(false)
+    }
+
+    val error = remember {
+        mutableStateOf<String?>(null)
+    }
+
+    val feature = remember {
+        mutableStateOf<List<Product>>(emptyList())
+    }
+
+    val popular = remember {
+        mutableStateOf<List<Product>>(emptyList())
+    }
+
+    val categories = remember {
+        mutableStateOf<List<String>>(emptyList())
+    }
+
     Scaffold {
         Surface(
             modifier = Modifier
@@ -59,20 +82,33 @@ fun HomeScreen(
         ) {
             when(uiState.value) {
                 is HomeScreenUIEvents.Loading -> {
-                    CircularProgressIndicator()
+                    loading.value = true
+                    error.value = null
                 }
                 is HomeScreenUIEvents.Success -> {
                     val data = (uiState.value as HomeScreenUIEvents.Success)
-                    HomeContent(
-                        featured = data.featured,
-                        popularProducts = data.popularProduct,
-                        categories = data.categories
-                    )
+
+                    feature.value = data.featured
+                    popular.value = data.popularProduct
+                    categories.value = data.categories
+
+                    loading.value = false
+                    error.value = null
                 }
                 is HomeScreenUIEvents.Error -> {
-                    Text(text = (uiState.value as HomeScreenUIEvents.Error).message)
+                    val errorMessage = (uiState.value as HomeScreenUIEvents.Error).message
+                    loading.value = false
+                    error.value = errorMessage
                 }
             }
+
+            HomeContent(
+                featured = feature.value,
+                popularProducts = popular.value,
+                categories = categories.value,
+                isLoading = loading.value,
+                errorMessage = error.value
+            )
         }
     }
 }
@@ -124,7 +160,9 @@ fun ProfileHeader() {
 fun HomeContent(
     featured: List<Product>,
     popularProducts:List<Product>,
-    categories: List<String>
+    categories: List<String>,
+    isLoading: Boolean = false,
+    errorMessage: String? = null
 ) {
     LazyColumn {
         item {
@@ -134,6 +172,19 @@ fun HomeContent(
             Spacer(modifier = Modifier.size(16.dp))
         }
         item {
+            if (isLoading) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    CircularProgressIndicator(modifier = Modifier.size(50.dp))
+                    Text(text = "Loading...", style = MaterialTheme.typography.bodyMedium)
+                }
+            }
+            errorMessage?.let { 
+                Text(text = it, style = MaterialTheme.typography.bodyMedium)
+            }
             if (categories.isNotEmpty()) {
                 LazyRow {
                     items(categories) { category ->
