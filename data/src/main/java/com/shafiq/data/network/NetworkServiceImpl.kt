@@ -1,7 +1,9 @@
 package com.shafiq.data.network
 
-import com.shafiq.data.model.DataProductModel
-import com.shafiq.domain.model.Product
+import com.shafiq.data.model.response.CategoriesListResponse
+import com.shafiq.data.model.response.ProductListResponse
+import com.shafiq.domain.model.CategoriesListModel
+import com.shafiq.domain.model.ProductListModel
 import com.shafiq.domain.network.NetworkService
 import com.shafiq.domain.network.ResultWrapper
 import io.ktor.client.HttpClient
@@ -20,26 +22,29 @@ import java.io.IOException
 
 class NetworkServiceImpl(val client: HttpClient) : NetworkService {
 
-    private val baseUrl = "https://fakestoreapi.com"
+    private val baseUrl = "https://ecommerce-ktor-4641e7ff1b63.herokuapp.com"
 
-    override suspend fun getProducts(category: String?): ResultWrapper<List<Product>> {
+    override suspend fun getProducts(category: Int?): ResultWrapper<ProductListModel> {
 
         val url = if (category != null) "$baseUrl/products/category/$category" else "$baseUrl/products"
 
         return makeWebRequest(
             url = url,
             method = HttpMethod.Get,
-            mapper = { dataModule: List<DataProductModel> ->
-                dataModule.map { it.toProduct() }
+            mapper = { dataModule: ProductListResponse ->
+                dataModule.toProductList()
             }
         )
     }
 
-    override suspend fun getCategories(): ResultWrapper<List<String>> {
-        val url = "$baseUrl/products/categories"
-        return makeWebRequest<List<String>, List<String>>(
+    override suspend fun getCategories(): ResultWrapper<CategoriesListModel> {
+        val url = "$baseUrl/categories"
+        return makeWebRequest(
             url = url,
-            method = HttpMethod.Get
+            method = HttpMethod.Get,
+            mapper = { categories: CategoriesListResponse ->
+                categories.toCategoriesList()
+            }
         )
     }
 
