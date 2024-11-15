@@ -1,10 +1,11 @@
-package com.shafiq.shopper_ecommerce.feature.home
+package com.shafiq.shopper_ecommerce.ui.feature.home
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -48,6 +49,8 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.shafiq.domain.model.Product
 import com.shafiq.shopper_ecommerce.R
+import com.shafiq.shopper_ecommerce.model.UIProductModel
+import com.shafiq.shopper_ecommerce.navigation.ProductDetails
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -111,7 +114,10 @@ fun HomeScreen(
                 popularProducts = popular.value,
                 categories = categories.value,
                 isLoading = loading.value,
-                errorMessage = error.value
+                errorMessage = error.value,
+                onClick = {
+                    navController.navigate(ProductDetails(UIProductModel.fromProduct(it)))
+                }
             )
         }
     }
@@ -166,7 +172,8 @@ fun HomeContent(
     popularProducts:List<Product>,
     categories: List<String>,
     isLoading: Boolean = false,
-    errorMessage: String? = null
+    errorMessage: String? = null,
+    onClick: (Product) -> Unit
 ) {
     LazyColumn {
         item {
@@ -215,11 +222,11 @@ fun HomeContent(
                 Spacer(modifier = Modifier.size(22.dp))
             }
             if (featured.isNotEmpty()) {
-                HomeProductRow(products = featured, title = "Featured")
+                HomeProductRow(products = featured, title = "Featured", onClick = onClick)
                 Spacer(modifier = Modifier.size(16.dp))
             }
             if (popularProducts.isNotEmpty()) {
-                HomeProductRow(products = popularProducts, title = "Popular")
+                HomeProductRow(products = popularProducts, title = "Popular", onClick = onClick)
             }
         }
     }
@@ -276,7 +283,7 @@ fun SearchBar(
 }
 
 @Composable
-fun HomeProductRow(products: List<Product>, title:String) {
+fun HomeProductRow(products: List<Product>, title:String, onClick: (Product) -> Unit) {
     Column {
         Box(modifier = Modifier
             .padding(horizontal = 16.dp)
@@ -311,7 +318,7 @@ fun HomeProductRow(products: List<Product>, title:String) {
                     visible = isVisible.value,
                     enter = fadeIn() + expandVertically()
                 ) {
-                    ProductItem(product = product)
+                    ProductItem(product = product, onClick = onClick)
                 }
             }
         }
@@ -319,11 +326,12 @@ fun HomeProductRow(products: List<Product>, title:String) {
 }
 
 @Composable
-fun ProductItem(product: Product) {
+fun ProductItem(product: Product, onClick: (Product) -> Unit) {
     Card(
         modifier = Modifier
             .padding(horizontal = 8.dp)
-            .size(width = 126.dp, height = 150.dp),
+            .size(width = 126.dp, height = 150.dp)
+            .clickable { onClick(product) },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(contentColor = Color.LightGray.copy(alpha = 0.3f))
     ) {

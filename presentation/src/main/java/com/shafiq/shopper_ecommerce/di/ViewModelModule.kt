@@ -1,6 +1,6 @@
 package com.shafiq.shopper_ecommerce.di
 
-import com.shafiq.shopper_ecommerce.feature.home.HomeViewModel
+import com.shafiq.shopper_ecommerce.ui.feature.home.HomeViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 

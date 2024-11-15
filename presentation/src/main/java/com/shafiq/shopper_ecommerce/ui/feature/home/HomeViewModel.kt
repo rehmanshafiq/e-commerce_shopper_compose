@@ -1,4 +1,4 @@
-package com.shafiq.shopper_ecommerce.feature.home
+package com.shafiq.shopper_ecommerce.ui.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
