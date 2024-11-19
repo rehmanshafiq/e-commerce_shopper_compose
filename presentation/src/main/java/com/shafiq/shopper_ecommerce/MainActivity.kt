@@ -3,6 +3,8 @@ package com.shafiq.shopper_ecommerce
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +17,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -32,6 +36,7 @@ import com.shafiq.shopper_ecommerce.navigation.ProductDetails
 import com.shafiq.shopper_ecommerce.navigation.ProfileScreen
 import com.shafiq.shopper_ecommerce.navigation.productNavType
 import com.shafiq.shopper_ecommerce.ui.feature.home.HomeScreen
+import com.shafiq.shopper_ecommerce.ui.feature.product_details.ProductDetailsScreen
 import com.shafiq.shopper_ecommerce.ui.theme.Shopper_ecommerceTheme
 import kotlin.reflect.typeOf
 
@@ -40,11 +45,19 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             Shopper_ecommerceTheme {
+                val shouldShowBottomNav = remember {
+                    mutableStateOf(true)
+                }
                 val navController = rememberNavController()
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     bottomBar = {
-                        BottomNavigationBar(navController = navController)
+                        AnimatedVisibility(
+                            visible = shouldShowBottomNav.value,
+                            enter = fadeIn()
+                        ) {
+                            BottomNavigationBar(navController = navController)
+                        }
                     }
                 ) {
                     Surface(
@@ -54,21 +67,26 @@ class MainActivity : ComponentActivity() {
                     ) {
                         NavHost(navController = navController, startDestination = HomeScreen) {
                             composable<HomeScreen> {
+                                shouldShowBottomNav.value = true
                                 HomeScreen(navController)
                             }
                             composable<CartScreen> {
+                                shouldShowBottomNav.value = true
                                 HomeScreen(navController)
                             }
                             composable<ProfileScreen> {
+                                shouldShowBottomNav.value = true
                                 HomeScreen(navController)
                             }
                             composable<ProductDetails>(
                                 typeMap = mapOf(typeOf<UIProductModel>() to productNavType)
                             ) {
+                                shouldShowBottomNav.value = false
                                 val productRoute = it.toRoute<ProductDetails>()
-                                Box(modifier = Modifier.fillMaxSize()) {
-                                    Text(text = productRoute.product.title)
-                                }
+                                ProductDetailsScreen(
+                                    navController = navController,
+                                    product = productRoute.product
+                                )
                             }
                         }
                     }
