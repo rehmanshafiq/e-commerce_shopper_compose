@@ -1,7 +1,13 @@
 package com.shafiq.data.network
 
-import com.shafiq.data.model.DataProductModel
-import com.shafiq.domain.model.Product
+import com.shafiq.data.model.request.AddToCartRequest
+import com.shafiq.data.model.response.CartResponse
+import com.shafiq.data.model.response.CategoriesListResponse
+import com.shafiq.data.model.response.ProductListResponse
+import com.shafiq.domain.model.CartModel
+import com.shafiq.domain.model.CategoriesListModel
+import com.shafiq.domain.model.ProductListModel
+import com.shafiq.domain.model.request.AddCartRequestModel
 import com.shafiq.domain.network.NetworkService
 import com.shafiq.domain.network.ResultWrapper
 import io.ktor.client.HttpClient
@@ -15,35 +21,48 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
 import io.ktor.http.Parameters
 import io.ktor.http.contentType
-import io.ktor.util.InternalAPI
 import java.io.IOException
 
 class NetworkServiceImpl(val client: HttpClient) : NetworkService {
 
-    private val baseUrl = "https://fakestoreapi.com"
+    private val baseUrl = "https://ecommerce-ktor-4641e7ff1b63.herokuapp.com"
 
-    override suspend fun getProducts(category: String?): ResultWrapper<List<Product>> {
+    override suspend fun getProducts(category: Int?): ResultWrapper<ProductListModel> {
 
         val url = if (category != null) "$baseUrl/products/category/$category" else "$baseUrl/products"
 
         return makeWebRequest(
             url = url,
             method = HttpMethod.Get,
-            mapper = { dataModule: List<DataProductModel> ->
-                dataModule.map { it.toProduct() }
+            mapper = { dataModule: ProductListResponse ->
+                dataModule.toProductList()
             }
         )
     }
 
-    override suspend fun getCategories(): ResultWrapper<List<String>> {
-        val url = "$baseUrl/products/categories"
-        return makeWebRequest<List<String>, List<String>>(
+    override suspend fun getCategories(): ResultWrapper<CategoriesListModel> {
+        val url = "$baseUrl/categories"
+        return makeWebRequest(
             url = url,
-            method = HttpMethod.Get
+            method = HttpMethod.Get,
+            mapper = { categories: CategoriesListResponse ->
+                categories.toCategoriesList()
+            }
         )
     }
 
-    @OptIn(InternalAPI::class)
+    override suspend fun addProductToCart(request: AddCartRequestModel): ResultWrapper<CartModel> {
+        val url = "$baseUrl/cart/1"
+        return makeWebRequest(
+            url = url,
+            method = HttpMethod.Post,
+            body = AddToCartRequest.fromCartRequestModel(request),
+            mapper = { cartItem: CartResponse ->
+                cartItem.toCartModel()
+            }
+        )
+    }
+
     suspend inline fun <reified T, R> makeWebRequest(
         url: String,
         method: HttpMethod,

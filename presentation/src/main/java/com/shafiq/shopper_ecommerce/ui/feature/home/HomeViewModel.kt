@@ -1,4 +1,4 @@
-package com.shafiq.shopper_ecommerce.feature.home
+package com.shafiq.shopper_ecommerce.ui.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -27,8 +27,8 @@ class HomeViewModel(
     private fun getAllProducts() {
         viewModelScope.launch {
             _uiState.value = HomeScreenUIEvents.Loading
-            val featured = getProducts(category = "electronics")
-            val popularProduct = getProducts(category = "jewelery")
+            val featured = getProducts(category = 1)
+            val popularProduct = getProducts(category = 2)
             val categories = getCategory()
             if (featured.isEmpty() && popularProduct.isEmpty() && categories.isNotEmpty()) {
                 _uiState.value = HomeScreenUIEvents.Error("Failed to load properly")
@@ -38,11 +38,11 @@ class HomeViewModel(
         }
     }
 
-    private suspend fun getProducts(category: String?) : List<Product> {
+    private suspend fun getProducts(category: Int?) : List<Product> {
         getProductUseCase.execute(category).let { result ->
             when(result) {
                 is ResultWrapper.Success -> {
-                    return result.value
+                    return result.value.products
                 }
                 is ResultWrapper.Failure -> {
                     return emptyList()
@@ -55,7 +55,7 @@ class HomeViewModel(
         getCategoriesUseCase.execute().let { result ->
             when(result) {
                 is ResultWrapper.Success -> {
-                    return result.value
+                    return result.value.categories.map { it.title }
                 }
                 is ResultWrapper.Failure -> {
                     return emptyList()

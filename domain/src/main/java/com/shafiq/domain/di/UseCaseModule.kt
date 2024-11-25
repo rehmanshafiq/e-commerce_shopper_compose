@@ -1,5 +1,6 @@
 package com.shafiq.domain.di
 
+import com.shafiq.domain.usecase.AddToCartUseCase
 import com.shafiq.domain.usecase.GetCategoriesUseCase
 import com.shafiq.domain.usecase.GetProductUseCase
 import org.koin.dsl.module
@@ -11,5 +12,9 @@ val useCaseModule = module {
 
     factory {
         GetCategoriesUseCase(get())
+    }
+
+    factory {
+        AddToCartUseCase(get())
     }
 }
