@@ -1,5 +1,6 @@
 package com.shafiq.shopper_ecommerce.di
 
+import com.shafiq.shopper_ecommerce.ui.feature.cart.CartViewModel
 import com.shafiq.shopper_ecommerce.ui.feature.home.HomeViewModel
 import com.shafiq.shopper_ecommerce.ui.feature.product_details.ProductDetailsViewModel
 import org.koin.core.module.dsl.viewModel
@@ -11,5 +12,8 @@ val viewModelModule = module {
     }
     viewModel {
         ProductDetailsViewModel(get())
+    }
+    viewModel {
+        CartViewModel(get())
     }
 }

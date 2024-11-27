@@ -35,6 +35,7 @@ import com.shafiq.shopper_ecommerce.navigation.HomeScreen
 import com.shafiq.shopper_ecommerce.navigation.ProductDetails
 import com.shafiq.shopper_ecommerce.navigation.ProfileScreen
 import com.shafiq.shopper_ecommerce.navigation.productNavType
+import com.shafiq.shopper_ecommerce.ui.feature.cart.CartScreen
 import com.shafiq.shopper_ecommerce.ui.feature.home.HomeScreen
 import com.shafiq.shopper_ecommerce.ui.feature.product_details.ProductDetailsScreen
 import com.shafiq.shopper_ecommerce.ui.theme.Shopper_ecommerceTheme
@@ -72,7 +73,7 @@ class MainActivity : ComponentActivity() {
                             }
                             composable<CartScreen> {
                                 shouldShowBottomNav.value = true
-                                HomeScreen(navController)
+                                CartScreen(navController)
                             }
                             composable<ProfileScreen> {
                                 shouldShowBottomNav.value = true
