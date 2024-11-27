@@ -25,6 +25,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -194,28 +195,30 @@ fun ProductDetailsScreen(
             mutableStateOf(false)
         }
 
-        when(uiState.value) {
-            is ProductDetailsEvent.Loading -> {
-                loading.value = true
-            }
-            is ProductDetailsEvent.Success -> {
-                loading.value = false
-                Toast.makeText(
-                    navController.context,
-                    (uiState.value as ProductDetailsEvent.Success).message,
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-            is ProductDetailsEvent.Error -> {
-                loading.value = false
-                Toast.makeText(
-                    navController.context,
-                    (uiState.value as ProductDetailsEvent.Success).message,
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-            else -> {
-                loading.value = false
+        LaunchedEffect(uiState.value) {
+            when(uiState.value) {
+                is ProductDetailsEvent.Loading -> {
+                    loading.value = true
+                }
+                is ProductDetailsEvent.Success -> {
+                    loading.value = false
+                    Toast.makeText(
+                        navController.context,
+                        (uiState.value as ProductDetailsEvent.Success).message,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                is ProductDetailsEvent.Error -> {
+                    loading.value = false
+                    Toast.makeText(
+                        navController.context,
+                        (uiState.value as ProductDetailsEvent.Success).message,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                else -> {
+                    loading.value = false
+                }
             }
         }
 
