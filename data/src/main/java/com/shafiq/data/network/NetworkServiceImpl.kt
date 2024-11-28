@@ -4,6 +4,7 @@ import com.shafiq.data.model.request.AddToCartRequest
 import com.shafiq.data.model.response.CartResponse
 import com.shafiq.data.model.response.CategoriesListResponse
 import com.shafiq.data.model.response.ProductListResponse
+import com.shafiq.domain.model.CartItemModel
 import com.shafiq.domain.model.CartModel
 import com.shafiq.domain.model.CategoriesListModel
 import com.shafiq.domain.model.ProductListModel
@@ -25,7 +26,7 @@ import java.io.IOException
 
 class NetworkServiceImpl(val client: HttpClient) : NetworkService {
 
-    private val baseUrl = "https://ecommerce-ktor-4641e7ff1b63.herokuapp.com"
+    private val baseUrl = "https://ecommerce-ktor-4641e7ff1b63.herokuapp.com/v2"
 
     override suspend fun getProducts(category: Int?): ResultWrapper<ProductListModel> {
 
@@ -68,6 +69,21 @@ class NetworkServiceImpl(val client: HttpClient) : NetworkService {
         return makeWebRequest(
             url = url,
             method = HttpMethod.Get,
+            mapper = { cartItem: CartResponse ->
+                cartItem.toCartModel()
+            }
+        )
+    }
+
+    override suspend fun updateQuantity(cartItemModel: CartItemModel): ResultWrapper<CartModel> {
+        val url = "$baseUrl/cart/1/${cartItemModel.id}"
+        return makeWebRequest(
+            url = url,
+            method = HttpMethod.Put,
+            body = AddToCartRequest(
+                productId = cartItemModel.productId,
+                quantity = cartItemModel.quantity
+            ),
             mapper = { cartItem: CartResponse ->
                 cartItem.toCartModel()
             }
