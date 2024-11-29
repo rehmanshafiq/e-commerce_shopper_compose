@@ -30,9 +30,9 @@ An Android-based e-commerce application following Clean Architecture principles 
 
 Contributions are welcome! Please follow these steps:
 1. Fork the repository.
-2. Create a new branch: git checkout -b feature-name.
-3. Commit your changes: git commit -m "Add new feature".
-4. Push the branch: git push origin feature-name.
+2. Create a new branch: `git checkout -b feature-name`.
+3. Commit your changes: `git commit -m "Add new feature"`.
+4. Push the branch: `git push origin feature-name`.
 5. Create a pull request.
 
 **Contact**
