@@ -1,4 +1,4 @@
-**E-Commerce Shopper App**
+# **E-Commerce Shopper App**
 
 An Android-based e-commerce application following Clean Architecture principles and modern Android development practices. This app demonstrates an end-to-end implementation with Ktor for API interaction, Jetpack Compose for UI, Koin for dependency injection and a modular architecture to ensure scalability, testability, and maintainability.
 
@@ -11,7 +11,7 @@ An Android-based e-commerce application following Clean Architecture principles 
 - User Authentication: Login and edit profile functionality.
 - Wishlist: Save favorite items for future reference.
 
-**Tech Stack**
+# **Tech Stack**
 
 **Architecture**
 
@@ -28,7 +28,7 @@ An Android-based e-commerce application following Clean Architecture principles 
 
 **Contributing**
 
--Contributions are welcome! Please follow these steps:
+- Contributions are welcome! Please follow these steps:
 1. Fork the repository.
 2. Create a new branch: git checkout -b feature-name.
 3. Commit your changes: git commit -m "Add new feature".
