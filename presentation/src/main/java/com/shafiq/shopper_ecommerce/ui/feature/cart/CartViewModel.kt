@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shafiq.domain.model.CartItemModel
 import com.shafiq.domain.network.ResultWrapper
+import com.shafiq.domain.usecase.DeleteProductUseCase
 import com.shafiq.domain.usecase.GetCartUseCase
 import com.shafiq.domain.usecase.UpdateQuantityUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +13,8 @@ import kotlinx.coroutines.launch
 
 class CartViewModel(
     private val cartUseCase: GetCartUseCase,
-    private val updateQuantityUseCase: UpdateQuantityUseCase
+    private val updateQuantityUseCase: UpdateQuantityUseCase,
+    private val deleteItem: DeleteProductUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<CartEvent>(CartEvent.Loading)
@@ -62,7 +64,18 @@ class CartViewModel(
     }
 
     fun removeItem(cartItem: CartItemModel) {
-
+        viewModelScope.launch {
+            _uiState.value = CartEvent.Loading
+            val result = deleteItem.execute(cartItem.id, 1)
+            when(result) {
+                is ResultWrapper.Success -> {
+                    _uiState.value = CartEvent.Success(result.value.data)
+                }
+                is ResultWrapper.Failure -> {
+                    _uiState.value = CartEvent.Error("Something went wrong!")
+                }
+            }
+        }
     }
 
 }

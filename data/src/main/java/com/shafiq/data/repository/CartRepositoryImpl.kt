@@ -22,4 +22,8 @@ class CartRepositoryImpl(
     override suspend fun updateQuantity(cartItemModel: CartItemModel): ResultWrapper<CartModel> {
         return networkService.updateQuantity(cartItemModel)
     }
+
+    override suspend fun deleteItem(cartItemId: Int, userId: Int): ResultWrapper<CartModel> {
+        return networkService.deleteItem(cartItemId, userId)
+    }
 }
