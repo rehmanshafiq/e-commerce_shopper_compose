@@ -2,10 +2,12 @@ package com.shafiq.data.network
 
 import com.shafiq.data.model.request.AddToCartRequest
 import com.shafiq.data.model.response.CartResponse
+import com.shafiq.data.model.response.CartSummaryResponse
 import com.shafiq.data.model.response.CategoriesListResponse
 import com.shafiq.data.model.response.ProductListResponse
 import com.shafiq.domain.model.CartItemModel
 import com.shafiq.domain.model.CartModel
+import com.shafiq.domain.model.CartSummary
 import com.shafiq.domain.model.CategoriesListModel
 import com.shafiq.domain.model.ProductListModel
 import com.shafiq.domain.model.request.AddCartRequestModel
@@ -101,7 +103,18 @@ class NetworkServiceImpl(val client: HttpClient) : NetworkService {
         )
     }
 
-    suspend inline fun <reified T, R> makeWebRequest(
+    override suspend fun getCartSummary(userId: Int): ResultWrapper<CartSummary> {
+        val url = "$baseUrl/cart/$userId/summary"
+        return makeWebRequest(
+            url = url,
+            method = HttpMethod.Get,
+            mapper = { cartSummary: CartSummaryResponse ->
+                cartSummary.toCartSummary()
+            }
+        )
+    }
+
+    private suspend inline fun <reified T, R> makeWebRequest(
         url: String,
         method: HttpMethod,
         body: Any? = null,
