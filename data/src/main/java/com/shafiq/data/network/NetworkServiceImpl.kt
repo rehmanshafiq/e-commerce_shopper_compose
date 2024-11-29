@@ -90,6 +90,17 @@ class NetworkServiceImpl(val client: HttpClient) : NetworkService {
         )
     }
 
+    override suspend fun deleteItem(cartItemId: Int, userId: Int): ResultWrapper<CartModel> {
+        val url = "$baseUrl/cart/$userId/$cartItemId"
+        return makeWebRequest(
+            url = url,
+            method = HttpMethod.Delete,
+            mapper = { cartItem: CartResponse ->
+                cartItem.toCartModel()
+            }
+        )
+    }
+
     suspend inline fun <reified T, R> makeWebRequest(
         url: String,
         method: HttpMethod,
