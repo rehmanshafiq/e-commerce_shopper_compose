@@ -1,6 +1,7 @@
 package com.shafiq.domain.di
 
 import com.shafiq.domain.usecase.AddToCartUseCase
+import com.shafiq.domain.usecase.CartSummaryUseCase
 import com.shafiq.domain.usecase.DeleteProductUseCase
 import com.shafiq.domain.usecase.GetCartUseCase
 import com.shafiq.domain.usecase.GetCategoriesUseCase
@@ -31,5 +32,9 @@ val useCaseModule = module {
 
     factory {
         DeleteProductUseCase(get())
+    }
+
+    factory {
+        CartSummaryUseCase(get())
     }
 }

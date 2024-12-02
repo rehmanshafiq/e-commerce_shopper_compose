@@ -41,10 +41,12 @@ class CartViewModel(
     }
 
     fun incrementQuantity(cartItem: CartItemModel) {
+        if (cartItem.quantity == 10) return
         updateQuantity(cartItem.copy(quantity = cartItem.quantity + 1))
     }
 
     fun decrementQuantity(cartItem: CartItemModel) {
+        if (cartItem.quantity == 1) return
         updateQuantity(cartItem.copy(quantity = cartItem.quantity - 1))
     }
 
