@@ -19,6 +19,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.shafiq.domain.model.CartItemModel
 import com.shafiq.domain.model.CartSummary
@@ -105,15 +106,17 @@ fun CartSummaryScreenContent(cartSummary: CartSummary) {
 fun ProductRow(cartItemModel: CartItemModel) {
     Row(modifier = Modifier
         .fillMaxSize()
-        .padding(8.dp)
+        .padding(horizontal = 8.dp)
     ) {
         Text(text = cartItemModel.productName,
             modifier = Modifier.weight(1f),
-            style = MaterialTheme.typography.bodyMedium
+            style = MaterialTheme.typography.bodySmall,
+            fontSize = 14.sp
         )
         Text(
             text = "${CurrencyUtils.formatPrice(cartItemModel.price)} x ${cartItemModel.quantity}",
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleSmall,
+            fontSize = 14.sp
         )
     }
 }
@@ -122,9 +125,17 @@ fun ProductRow(cartItemModel: CartItemModel) {
 fun AmountRow(title: String, amount: Double) {
     Row(modifier = Modifier
         .fillMaxSize()
-        .padding(8.dp)
+        .padding(horizontal = 8.dp)
     ) {
-        Text(text = title, modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium)
-        Text(text = CurrencyUtils.formatPrice(amount), style = MaterialTheme.typography.titleMedium)
+        Text(
+            text = title, modifier = Modifier.weight(1f),
+            style = MaterialTheme.typography.bodySmall,
+            fontSize = 14.sp
+        )
+        Text(
+            text = CurrencyUtils.formatPrice(amount),
+            style = MaterialTheme.typography.titleSmall,
+            fontSize = 14.sp
+        )
     }
 }
