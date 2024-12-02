@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.shafiq.domain.model.CartItemModel
 import com.shafiq.domain.model.CartSummary
+import com.shafiq.shopper_ecommerce.utils.CurrencyUtils
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -111,7 +112,7 @@ fun ProductRow(cartItemModel: CartItemModel) {
             style = MaterialTheme.typography.bodyMedium
         )
         Text(
-            text = "$${cartItemModel.price} x ${cartItemModel.quantity} = $${(cartItemModel.price * cartItemModel.quantity)}",
+            text = "${CurrencyUtils.formatPrice(cartItemModel.price)} x ${cartItemModel.quantity}",
             style = MaterialTheme.typography.titleMedium
         )
     }
@@ -124,6 +125,6 @@ fun AmountRow(title: String, amount: Double) {
         .padding(8.dp)
     ) {
         Text(text = title, modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium)
-        Text(text = "$$amount", style = MaterialTheme.typography.titleMedium)
+        Text(text = CurrencyUtils.formatPrice(amount), style = MaterialTheme.typography.titleMedium)
     }
 }
