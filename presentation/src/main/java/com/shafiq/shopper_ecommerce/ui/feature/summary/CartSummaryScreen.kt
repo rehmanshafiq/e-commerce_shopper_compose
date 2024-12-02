@@ -1,5 +1,6 @@
 package com.shafiq.shopper_ecommerce.ui.feature.summary
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -18,6 +20,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -78,20 +82,26 @@ fun CartSummaryScreen(
 
 @Composable
 fun CartSummaryScreenContent(cartSummary: CartSummary) {
-    LazyColumn {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(Color.LightGray.copy(alpha = 0.4f))
+            .padding(8.dp)
+    ) {
         item {
-            Text(text = "Products", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(vertical = 8.dp))
+            Text(
+                text = "Order Summary",
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
         }
         items(cartSummary.data.items) { cartItem ->
             ProductRow(cartItemModel = cartItem)
         }
         item {
             Column {
-                Text(
-                    text = "Amount:",
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(vertical = 8.dp)
-                )
                 AmountRow(title = "Subtotal", amount = cartSummary.data.subtotal)
                 AmountRow(title = "Tax", amount = cartSummary.data.tax)
                 AmountRow(title = "Shipping", amount = cartSummary.data.shipping)
@@ -106,7 +116,7 @@ fun CartSummaryScreenContent(cartSummary: CartSummary) {
 fun ProductRow(cartItemModel: CartItemModel) {
     Row(modifier = Modifier
         .fillMaxSize()
-        .padding(horizontal = 8.dp)
+        .padding(horizontal = 8.dp, vertical = 4.dp)
     ) {
         Text(text = cartItemModel.productName,
             modifier = Modifier.weight(1f),
@@ -125,7 +135,7 @@ fun ProductRow(cartItemModel: CartItemModel) {
 fun AmountRow(title: String, amount: Double) {
     Row(modifier = Modifier
         .fillMaxSize()
-        .padding(horizontal = 8.dp)
+        .padding(horizontal = 8.dp, vertical = 4.dp)
     ) {
         Text(
             text = title, modifier = Modifier.weight(1f),
