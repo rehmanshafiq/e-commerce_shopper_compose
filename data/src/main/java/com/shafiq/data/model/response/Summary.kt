@@ -8,7 +8,7 @@ data class Summary(
     val discount: Double,
     val items: List<CartItem>,
     val shipping: Double,
-    val subTotal: Double,
+    val subtotal: Double,
     val tax: Double,
     val total: Double
 ) {
@@ -16,7 +16,7 @@ data class Summary(
         discount = discount,
         items = items.map { it.toCartItemModel() },
         shipping = shipping,
-        subTotal = subTotal,
+        subtotal = subtotal,
         tax = tax,
         total = total
     )

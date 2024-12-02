@@ -31,6 +31,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.shafiq.shopper_ecommerce.model.UIProductModel
 import com.shafiq.shopper_ecommerce.navigation.CartScreen
+import com.shafiq.shopper_ecommerce.navigation.CartSummaryScreen
 import com.shafiq.shopper_ecommerce.navigation.HomeScreen
 import com.shafiq.shopper_ecommerce.navigation.ProductDetails
 import com.shafiq.shopper_ecommerce.navigation.ProfileScreen
@@ -38,6 +39,7 @@ import com.shafiq.shopper_ecommerce.navigation.productNavType
 import com.shafiq.shopper_ecommerce.ui.feature.cart.CartScreen
 import com.shafiq.shopper_ecommerce.ui.feature.home.HomeScreen
 import com.shafiq.shopper_ecommerce.ui.feature.product_details.ProductDetailsScreen
+import com.shafiq.shopper_ecommerce.ui.feature.summary.CartSummaryScreen
 import com.shafiq.shopper_ecommerce.ui.theme.Shopper_ecommerceTheme
 import kotlin.reflect.typeOf
 
@@ -78,6 +80,10 @@ class MainActivity : ComponentActivity() {
                             composable<ProfileScreen> {
                                 shouldShowBottomNav.value = true
                                 HomeScreen(navController)
+                            }
+                            composable<CartSummaryScreen> {
+                                shouldShowBottomNav.value = false
+                                CartSummaryScreen(navController = navController)
                             }
                             composable<ProductDetails>(
                                 typeMap = mapOf(typeOf<UIProductModel>() to productNavType)
