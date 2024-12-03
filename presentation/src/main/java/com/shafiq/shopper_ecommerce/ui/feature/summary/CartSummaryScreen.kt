@@ -22,7 +22,10 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,6 +38,10 @@ import androidx.navigation.NavController
 import com.shafiq.domain.model.CartItemModel
 import com.shafiq.domain.model.CartSummary
 import com.shafiq.shopper_ecommerce.R
+import com.shafiq.shopper_ecommerce.model.UserAddress
+import com.shafiq.shopper_ecommerce.navigation.UserAddressRoute
+import com.shafiq.shopper_ecommerce.navigation.UserAddressRouteWrapper
+import com.shafiq.shopper_ecommerce.ui.feature.user_address.USER_ADDRESS
 import com.shafiq.shopper_ecommerce.utils.CurrencyUtils
 import org.koin.androidx.compose.koinViewModel
 
@@ -43,6 +50,9 @@ fun CartSummaryScreen(
     navController: NavController,
     viewModel: CartSummaryViewModel = koinViewModel()
 ) {
+    val address = remember {
+        mutableStateOf<UserAddress?>(null)
+    }
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -60,6 +70,14 @@ fun CartSummaryScreen(
             )
         }
         val state = viewModel.uiState.collectAsState()
+        
+        LaunchedEffect(key1 = navController) {
+            val saveState = navController.currentBackStackEntry?.savedStateHandle
+            saveState?.getStateFlow(USER_ADDRESS, address.value)?.collect { userAddress ->
+                address.value = userAddress
+            }
+        }
+        
         Box(
             modifier = Modifier
                 .weight(1f)
@@ -82,8 +100,10 @@ fun CartSummaryScreen(
                 is CartSummaryEvent.Success -> {
                     Column {
                         AddressBar(
-                            address = "1234, Main Street, New York, USA",
-                            onClick = {}
+                            address = address.value?.toString() ?: "1234, Main Street, New York, USA",
+                            onClick = {
+                                navController.navigate(UserAddressRoute(UserAddressRouteWrapper(address.value)))
+                            }
                         )
                         Spacer(modifier = Modifier.size(8.dp))
                         CartSummaryScreenContent(cartSummary = event.summary)

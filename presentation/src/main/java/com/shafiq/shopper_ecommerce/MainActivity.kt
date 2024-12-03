@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomAppBar
@@ -35,11 +34,15 @@ import com.shafiq.shopper_ecommerce.navigation.CartSummaryScreen
 import com.shafiq.shopper_ecommerce.navigation.HomeScreen
 import com.shafiq.shopper_ecommerce.navigation.ProductDetails
 import com.shafiq.shopper_ecommerce.navigation.ProfileScreen
+import com.shafiq.shopper_ecommerce.navigation.UserAddressRoute
+import com.shafiq.shopper_ecommerce.navigation.UserAddressRouteWrapper
 import com.shafiq.shopper_ecommerce.navigation.productNavType
+import com.shafiq.shopper_ecommerce.navigation.userAddressNavType
 import com.shafiq.shopper_ecommerce.ui.feature.cart.CartScreen
 import com.shafiq.shopper_ecommerce.ui.feature.home.HomeScreen
 import com.shafiq.shopper_ecommerce.ui.feature.product_details.ProductDetailsScreen
 import com.shafiq.shopper_ecommerce.ui.feature.summary.CartSummaryScreen
+import com.shafiq.shopper_ecommerce.ui.feature.user_address.UserAddressScreen
 import com.shafiq.shopper_ecommerce.ui.theme.Shopper_ecommerceTheme
 import kotlin.reflect.typeOf
 
@@ -93,6 +96,16 @@ class MainActivity : ComponentActivity() {
                                 ProductDetailsScreen(
                                     navController = navController,
                                     product = productRoute.product
+                                )
+                            }
+                            composable<UserAddressRoute>(
+                                typeMap = mapOf(typeOf<UserAddressRouteWrapper>() to userAddressNavType)
+                            ) {
+                                shouldShowBottomNav.value = false
+                                val userAddressRoute = it.toRoute<UserAddressRoute>()
+                                UserAddressScreen(
+                                    navController = navController,
+                                    userAddress = userAddressRoute.userAddressRouteWrapper.userAddress
                                 )
                             }
                         }
