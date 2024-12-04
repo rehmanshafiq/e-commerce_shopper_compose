@@ -12,4 +12,8 @@ data class UserAddress(
     val state: String,
     val postalCode: String,
     val country: String
-) : Parcelable
+) : Parcelable {
+    override fun toString(): String {
+        return "$addressLine, $city, $state, $postalCode, $country"
+    }
+}
