@@ -100,7 +100,7 @@ fun CartSummaryScreen(
                 is CartSummaryEvent.Success -> {
                     Column {
                         AddressBar(
-                            address = address.value?.toString() ?: "1234, Main Street, New York, USA",
+                            address = address.value?.toString() ?: "",
                             onClick = {
                                 navController.navigate(UserAddressRoute(UserAddressRouteWrapper(address.value)))
                             }

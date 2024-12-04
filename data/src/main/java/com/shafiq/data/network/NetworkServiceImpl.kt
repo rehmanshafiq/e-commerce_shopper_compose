@@ -1,10 +1,12 @@
 package com.shafiq.data.network
 
 import com.shafiq.data.model.request.AddToCartRequest
+import com.shafiq.data.model.request.AddressDataModel
 import com.shafiq.data.model.response.CartResponse
 import com.shafiq.data.model.response.CartSummaryResponse
 import com.shafiq.data.model.response.CategoriesListResponse
 import com.shafiq.data.model.response.ProductListResponse
+import com.shafiq.domain.model.AddressDomainModel
 import com.shafiq.domain.model.CartItemModel
 import com.shafiq.domain.model.CartModel
 import com.shafiq.domain.model.CartSummary
@@ -110,6 +112,19 @@ class NetworkServiceImpl(val client: HttpClient) : NetworkService {
             method = HttpMethod.Get,
             mapper = { cartSummary: CartSummaryResponse ->
                 cartSummary.toCartSummary()
+            }
+        )
+    }
+
+    override suspend fun placeOrder(addressDomainModel: AddressDomainModel, userId: Int): ResultWrapper<Long> {
+        val dataModel = AddressDataModel.fromDomainAddress(addressDomainModel)
+        val url = "$baseUrl/orders/$userId"
+        return makeWebRequest(
+            url = url,
+            method = HttpMethod.Post,
+            body = dataModel,
+            mapper = { orderId: Long ->
+                orderId
             }
         )
     }

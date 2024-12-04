@@ -6,6 +6,7 @@ import com.shafiq.domain.usecase.DeleteProductUseCase
 import com.shafiq.domain.usecase.GetCartUseCase
 import com.shafiq.domain.usecase.GetCategoriesUseCase
 import com.shafiq.domain.usecase.GetProductUseCase
+import com.shafiq.domain.usecase.PlaceOrderUseCase
 import com.shafiq.domain.usecase.UpdateQuantityUseCase
 import org.koin.dsl.module
 
@@ -36,5 +37,9 @@ val useCaseModule = module {
 
     factory {
         CartSummaryUseCase(get())
+    }
+
+    factory {
+        PlaceOrderUseCase(get())
     }
 }

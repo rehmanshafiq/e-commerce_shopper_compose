@@ -1,5 +1,6 @@
 package com.shafiq.domain.network
 
+import com.shafiq.domain.model.AddressDomainModel
 import com.shafiq.domain.model.CartItemModel
 import com.shafiq.domain.model.CartModel
 import com.shafiq.domain.model.CartSummary
@@ -15,6 +16,7 @@ interface NetworkService {
     suspend fun updateQuantity(cartItemModel: CartItemModel): ResultWrapper<CartModel>
     suspend fun deleteItem(cartItemId: Int, userId: Int): ResultWrapper<CartModel>
     suspend fun getCartSummary(userId: Int): ResultWrapper<CartSummary>
+    suspend fun placeOrder(addressDomainModel: AddressDomainModel, userId: Int): ResultWrapper<Long>
 }
 
 sealed class ResultWrapper<out T> {
