@@ -5,6 +5,7 @@ import com.shafiq.data.model.request.AddressDataModel
 import com.shafiq.data.model.response.CartResponse
 import com.shafiq.data.model.response.CartSummaryResponse
 import com.shafiq.data.model.response.CategoriesListResponse
+import com.shafiq.data.model.response.PlaceOrderResponse
 import com.shafiq.data.model.response.ProductListResponse
 import com.shafiq.domain.model.AddressDomainModel
 import com.shafiq.domain.model.CartItemModel
@@ -123,8 +124,8 @@ class NetworkServiceImpl(val client: HttpClient) : NetworkService {
             url = url,
             method = HttpMethod.Post,
             body = dataModel,
-            mapper = { orderId: Long ->
-                orderId
+            mapper = { orderRes: PlaceOrderResponse ->
+                orderRes.data.id
             }
         )
     }

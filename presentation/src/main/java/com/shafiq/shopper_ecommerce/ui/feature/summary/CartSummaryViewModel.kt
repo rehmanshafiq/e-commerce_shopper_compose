@@ -41,4 +41,5 @@ sealed class CartSummaryEvent {
     data object Loading: CartSummaryEvent()
     data class Error(val error: String): CartSummaryEvent()
     data class Success(val summary: CartSummary): CartSummaryEvent()
+    data class PlaceOrder(val orderId: Long): CartSummaryEvent()
 }
